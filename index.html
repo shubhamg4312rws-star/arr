@@ -1,25 +1,15 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Medicinal Plants AR Experience - Interactive 3D View</title>
+    <title>Medicinal Plants AR Experience</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/loaders/GLTFLoader.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        // Debug logging
-        window.addEventListener('load', () => {
-            console.log('Page loaded');
-            if (AFRAME) console.log('A-Frame loaded successfully');
-            if (THREEx) console.log('AR.js loaded successfully');
-        });
-    </script>
 </head>
-<body style="margin: 0; overflow: hidden;">
-
-    <!-- Full-screen gesture area, behind the UI -->
-    <div id="gesture-area"></div>
-
+<body>
+    <!-- UI Overlay -->
     <div class="ui-container">
         <select id="plantSelector" class="plant-dropdown" aria-label="Select a medicinal plant">
             <option value="">-- Select a Plant --</option>
@@ -30,12 +20,16 @@
             <option value="tulsi">Tulsi (Holy Basil)</option>
             <option value="Turmeric">Turmeric</option>
         </select>
-        <div class="info-card" id="plantInfo" style="display: none;">
-            <!-- Plant info will be injected here -->
-        </div>
+        <div class="info-card" id="plantInfo" style="display: none;"></div>
     </div>
-
-        <!-- Persistent UI overlay -->
+    <div class="status-bar">
+        <span id="status-icon" class="status-icon status-unknown">?</span>
+        <span id="debug-message" class="status-indicator">Initializing...</span>
+    </div>
+    <canvas id="xr-canvas"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>
         <div class="ui-container">
             <select id="plantSelector" class="plant-dropdown" aria-label="Select a medicinal plant">
                 <option value="">-- Select a Plant --</option>
