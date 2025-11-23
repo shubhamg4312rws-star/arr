@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let lastHitMatrix = null;
+    let surfaceDetected = false;
     function renderXR(timestamp, frame) {
         if (frame) {
             const hitTestResults = frame.getHitTestResults(xrHitTestSource);
@@ -163,11 +164,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pose = hit.getPose(xrRefSpace);
                 if (pose) {
                     lastHitMatrix = pose.transform.matrix;
-                    showDebug('Surface detected. Tap to place.');
+                    if (!surfaceDetected) {
+                        showDebug('✅ Flat surface detected! Tap to place your plant.');
+                        surfaceDetected = true;
+                    }
                 }
             } else {
                 lastHitMatrix = null;
-                showDebug('Point camera at a flat surface.');
+                if (surfaceDetected) {
+                    showDebug('❌ No flat surface detected. Move your device to find one.');
+                    surfaceDetected = false;
+                }
             }
         }
         renderer.render(scene, camera);
