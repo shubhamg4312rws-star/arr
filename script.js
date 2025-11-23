@@ -29,20 +29,38 @@ const plantInfo = {
 
 // --- UI and AR Setup ---
 document.addEventListener('DOMContentLoaded', () => {
-    const plantSelector = document.getElementById('plantSelector');
+    // Only select the first plantSelector (avoid duplicate IDs)
+    const plantSelector = document.querySelectorAll('#plantSelector')[0];
     const debugMsg = document.getElementById('debug-message');
     const infoCard = document.getElementById('plantInfo');
     const canvas = document.getElementById('xr-canvas');
+    const statusIcon = document.getElementById('status-icon');
 
     let selectedPlant = null;
     let placedModel = null;
     let gltfLoader = null;
 
-    // --- Debug Messaging ---
+    // --- Debug Messaging & Status Icon ---
     function showDebug(msg) {
         if (debugMsg) {
             debugMsg.textContent = msg;
             console.log(msg);
+        }
+    }
+    function setStatusIcon(state) {
+        if (!statusIcon) return;
+        if (state === 'yes') {
+            statusIcon.textContent = '✔';
+            statusIcon.classList.remove('status-no', 'status-unknown');
+            statusIcon.classList.add('status-yes');
+        } else if (state === 'no') {
+            statusIcon.textContent = '✖';
+            statusIcon.classList.remove('status-yes', 'status-unknown');
+            statusIcon.classList.add('status-no');
+        } else {
+            statusIcon.textContent = '?';
+            statusIcon.classList.remove('status-yes', 'status-no');
+            statusIcon.classList.add('status-unknown');
         }
     }
 
@@ -165,20 +183,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (pose) {
                     lastHitMatrix = pose.transform.matrix;
                     if (!surfaceDetected) {
-                        showDebug('✅ Flat surface detected! Tap to place your plant.');
+                        showDebug('Flat surface detected! Tap to place your plant.');
+                        setStatusIcon('yes');
                         surfaceDetected = true;
                     }
                 }
             } else {
                 lastHitMatrix = null;
                 if (surfaceDetected) {
-                    showDebug('❌ No flat surface detected. Move your device to find one.');
+                    showDebug('No flat surface detected. Move your device to find one.');
+                    setStatusIcon('no');
                     surfaceDetected = false;
                 }
             }
         }
         renderer.render(scene, camera);
     }
+
+    // Set initial status icon
+    setStatusIcon('unknown');
 
     // --- Start AR on user gesture ---
     canvas.addEventListener('click', () => {

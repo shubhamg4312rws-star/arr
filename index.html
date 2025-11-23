@@ -35,10 +35,28 @@
         </div>
     </div>
 
-    <!-- On-screen status/debug message -->
-    <div id="debug-message" class="status-indicator">Initializing...</div>
-    <!-- WebXR Canvas for AR rendering -->
-    <canvas id="xr-canvas" style="width:100vw; height:100vh; display:block;"></canvas>
-    <script src="script.js"></script>
+        <!-- Persistent UI overlay -->
+        <div class="ui-container">
+            <select id="plantSelector" class="plant-dropdown" aria-label="Select a medicinal plant">
+                <option value="">-- Select a Plant --</option>
+                <option value="Ahwagandha">Ashwagandha</option>
+                <option value="Cardamom">Cardamom</option>
+                <option value="Cinnamon">Cinnamon</option>
+                <option value="clove">Clove</option>
+                <option value="tulsi">Tulsi (Holy Basil)</option>
+                <option value="Turmeric">Turmeric</option>
+            </select>
+            <div class="info-card" id="plantInfo" style="display: none;"></div>
+        </div>
+
+        <!-- Status bar overlay -->
+        <div class="status-bar">
+            <span id="status-icon" class="status-icon status-unknown">?</span>
+            <span id="debug-message" class="status-indicator">Initializing...</span>
+        </div>
+
+        <!-- WebXR Canvas for AR rendering -->
+        <canvas id="xr-canvas" style="width:100vw; height:100vh; display:block;"></canvas>
+        <script src="script.js"></script>
 </body>
 </html>
